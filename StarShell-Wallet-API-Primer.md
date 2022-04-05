@@ -5,8 +5,7 @@ This article is intended for Web3 front-end dApp developers.
 ## _TLDR;_
 The StarShell extension will:
  - **Not** inject any variables into the global window scope by default (i.e., 🚫`window.starshell`).
- - **Require** the use feature detection rather than API versioning (e.g., `if(walletSupports.someFeature())`).
- - **Require** Novel permissions model.
+ - **Require** the use of feature detection rather than API versioning (e.g., `if(walletSupports.someFeature())`).
 
 
 ### `window.someChainOrExtension`: A Regrettable Mistake
