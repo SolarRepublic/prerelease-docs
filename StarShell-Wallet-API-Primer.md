@@ -35,22 +35,22 @@ StarShell will provide a library that exposes both low-level and high-level help
 Low-level example:
 ```ts
 import {
-	walletSupports,
+   walletSupports,
 } from 'starshell';
 
 await connection = connectApp();
 
 // type-narrowing feature detection
 if(walletSupports.suggestChain(connection)) {
-	connection.suggestChain({...});
-	//        ^ IDEs will autocomplete
+   connection.suggestChain({...});
+   //        ^ IDEs will autocomplete
 }
 ```
 
 High-level example:
 ```ts
 import {
-	walletSupports,
+   walletSupports,
 } from 'starshell';
 
 await connection = connectApp();
@@ -60,12 +60,12 @@ let snip20Connection: Snip20Connection = walletSupports.snip20(connection)? conn
 
 // unsupported feature guard
 if(!snip20Connection) {
-	throw new Error('Wallet does not support all SNIP-20 features so I give up');
+   throw new Error('Wallet does not support all SNIP-20 features so I give up');
 }
 
 // aliased connection object is now type fitted
 if(!snip20Connection.hasViewingKeyFor(token)) {
-	// ...
+   // ...
 }
 ```
 
