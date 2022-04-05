@@ -12,9 +12,9 @@ The StarShell extension will:
 
 The current practice of exposing wallet APIs by injecting a variable into the global scope was a poor idea for two primary reasons:
  1. It degrades user privacy. Any website can see these variables, deduce which extensions are installed, and use that to enhance browser fingerprinting or targeted advertising.
- 2. It assumes the user only has one wallet extension they'd like to use with some chain, and extensions may end up competing over the same variable, e.g., `window.ethereum`, `window.solana`, or in our case of providing backwards-compatibility with Keplr, `window.keplr`.
+ 2. It assumes the user only has one wallet extension they'd like to use with some chain, and extensions may end up competing over the same variable, e.g., `window.ethereum`, `window.solana`, or in our case of providing compatibility with Keplr, `window.keplr`.
 
-Given these issues, the StarShell extension will not inject any new variables into the global `window` scope. Instead, _sites_ must explicitly express interest in connecting to a wallet by declaring or pushing to an array of callback functions in the global `window` scope.
+Given these issues, the StarShell extension will not inject any new variables into the global `window` scope. Instead, sites must explicitly express interest in connecting to a wallet by declaring or pushing to an array of callback functions in the global `window` scope.
 
 You can think of this change as an inversion of control when compared to the traditional approach. This allows the user/wallet to silently ignore sites that only intend to snoop this information from the browser.
 
