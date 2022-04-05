@@ -64,7 +64,7 @@ if(!snip20Connection) {
 }
 
 // aliased connection object is now type fitted
-if(!snip20Connection.hasViewingKeyFor(token)) {
+if(snip20Connection.hasViewingKeyFor(token)) {
    // ...
 }
 ```
