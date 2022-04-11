@@ -1,4 +1,4 @@
-# StarShell Wallet API Primer v0.1
+# StarShell Wallet API Primer v0.2
 
 This article is intended for Web3 front-end dApp developers.
 
@@ -14,9 +14,25 @@ The current practice of exposing wallet APIs by injecting a variable into the gl
  1. It degrades user privacy. Any website can see these variables, deduce which extensions are installed, and use that to enhance browser fingerprinting or targeted advertising.
  2. It assumes the user only has one wallet extension they'd like to use with some chain, and extensions may end up competing over the same variable, e.g., `window.ethereum`, `window.solana`, or in our case of providing compatibility with Keplr, `window.keplr`.
 
-Given these issues, the StarShell extension will not inject any new variables into the global `window` scope. Instead, sites must explicitly express interest in connecting to a wallet by declaring or pushing to an array of callback functions in the global `window` scope.
+Given these issues, the StarShell extension will not inject any new variables into the global `window` scope. Instead, sites must explicitly express interest in connecting to a wallet by adding an event listener for `'walletAdvertisement'` to the top `window` object.
 
 You can think of this change as an inversion of control when compared to the traditional approach. This allows the user/wallet to silently ignore sites that only intend to snoop this information from the browser.
+
+_Example:_
+```html
+<script>
+   window.addEventListener('walletAdvertisement', (event) => {
+      const advertisement = event.data;
+
+      if(advertisement.features.includes(necessaryFeature)) {
+         advertisement.connect({
+            schema: '1.0',
+            chain: '',
+         });
+      }
+   });
+</script>
+```
 
 Here is a simplified process flow diagram to illustrate:
 
