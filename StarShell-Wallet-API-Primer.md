@@ -35,7 +35,7 @@ At the time of this writing, Progressive Web Apps (PWAs) on iOS do not support U
 
 The bottom line is that without Universal Link support or protocol handler registration, there is no way for the wallet to bring your PWA to the forgeround, making for a very fragmented UX.
 
-For these reasons, we strongly advise against PWAs in iOS for the moment and suggest simply keeping your dApp as a webapp within Safari where communication with the wallet can take place via the JavaScript API. If you plan on offering a native app either additionally or exclusively, the [communication protocol](#starshell-link-protocol-s2lp) is more complicated.
+For these reasons, we strongly advise against PWAs in iOS for the moment and suggest simply keeping your dApp as a webapp within Safari where communication with the wallet can take place via the JavaScript API. If you plan on offering a native app either additionally or exclusively, see the [communication protocol](#starshell-link-protocol-s2lp).
 
 
 ## StarShell Link Protocol (S2LP)
@@ -55,8 +55,8 @@ The S2LP protocol was designed to support the following features:
 
 ### 1. Generate RSA Key Pair
 
-In order better protect user privacy, all user-related data exchanged over the S2LP are encrypted using assymetric cryptography. Additionally, this data is placed in the hash fragment of the Universal Link URL to help ensure the information does not leave the device (e.g., in the event that no installed apps are registered to handle the Universal Link causing it to open in the browser).
-> The encryption of user-related data across app boundaries helps reduce the risks of leaking sensitive information from potentially malicious third parties that may be present of the device, such as spyware.
+In order better protect user privacy, all user-related data exchanged over the S2LP are encrypted using assymetric (public-key) cryptography. Additionally, this encrypted data is placed in the hash fragment of the Universal Link URL to help ensure the information does not leave the device unnecessarily (e.g., in the event that no installed apps are registered to handle the Universal Link causing it to open in the browser).
+> The encryption of user-related data across app boundaries is intended to reduce the attack surface of sensitive information from potentially malicious third parties that may be present of the device, such as spyware.
 
 Generate a new [RSA-OAEP key pair](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt#rsa-oaep_2) (this algorithm was chosen for current and future compatibility with SubtleCrypto for PWAs on platforms that support protocol registration). Save the private key to your app's keychain on the device. Once a connection has been established, this same key can be reused on the same device for future communication.
 > It is critical that your app follow this procedure and generate the key on the device itself. StarShell will perform additional checks internally to ensure that such private keys are not being reused across devices.
@@ -64,7 +64,7 @@ Generate a new [RSA-OAEP key pair](https://developer.mozilla.org/en-US/docs/Web/
 
 ### 2. Compose the Connection Request
 
-Your app should be prepared to handle two distinct callback URLs for handling all subsequent responses from the wallet (not just the connection request). One callback URL indicates success, while the other indicates error/failure. The origin of these two URLs be identical.
+Your app should be prepared to handle two distinct callback URLs for handling all subsequent responses from the wallet (not just the connection request). One callback URL indicates success, while the other indicates error/failure. The origin of these two URLs **MUST** be identical.
 
 #### Callback URLs
 You **MUST** use Universal/App Links for callback URLs. Custom protocol URIs (e.g., `your-app://callback`) are **NOT ALLOWED** to be used as callbacks.
@@ -183,6 +183,7 @@ The entire flow is visualized in the following diagram:
 
 ![S2LP flow diagram](s2lp.png)
 
+----------
 
 ## Web Apps (JavaScript API)
 
